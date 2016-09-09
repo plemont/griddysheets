@@ -1,0 +1,76 @@
+:root {
+  --grid-cell-height: 50%;
+  --grid-cell-width: 50%;
+}
+
+html, body {
+  font-family: 'Roboto', 'Helvetica', sans-serif;
+  min-height: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #000;
+}
+
+#settings-container {
+  position:absolute;
+  padding: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+#auth-button-container {
+  padding-top: 10px;
+}
+
+.grid-container {
+  min-height: 100%;
+  height: 100%;
+  width: 100%;
+}
+
+.grid-cell {
+  width: var(--grid-cell-width);
+  height: var(--grid-cell-height);
+  float: left;
+  border: none;
+  transition: all 1s ease-out;
+}
+
+.grid-cell:before {
+    content: ' ';
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+}
+
+.grid-cell-text {
+  display: inline-block;
+  vertical-align: middle;
+  font-family: 'Roboto', sans-serif;
+  font-size: var(--grid-cell-font-size);
+  line-height: var(--grid-cell-font-size);
+  color: #FFF;
+  padding: 1vmin;
+  animation: fadein 1s;
+}
+
+.flash-cursor {
+  animation: 0.5s flash step-end infinite;
+}
+
+@keyframes flash {
+  from, to {
+    color: transparent;
+  }
+  50% {
+    color: #FFF;
+  }
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
