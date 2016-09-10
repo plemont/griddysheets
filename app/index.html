@@ -24,7 +24,7 @@
   <meta name="apple-mobile-web-app-title" content="Web Starter Kit">
   <link rel="apple-touch-icon" href="images/touch/apple-touch-icon.png">
 
-  <!-- Tile icon for Win8 (144x144 + tile color) -->
+  <!-- Tile icon for Win8 (144x144 + tile color)  -->
   <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
   <meta name="msapplication-TileColor" content="#2F3BA2">
 
@@ -44,6 +44,9 @@
   <div id="settings-container" class="hidden">
     <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" id="settings-button">
       <i class="material-icons">settings</i>
+    </button>
+    <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" id="fullscreen-button">
+      <i class="material-icons" id="fullscreen-button-text-element">fullscreen</i>
     </button>
     <div id ="auth-button-container">
       <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent hidden" id="authorize-button">Authorize</button>
@@ -92,7 +95,7 @@
   <noscript>Griddysheets requires JavaScript</noscript>
   <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
   <script src="https://apis.google.com/js/api.js"></script>
-  <!-- build:js scripts/main.min.js -->
+  <!-- build:js scripts/main.min.js?a=1 -->
   <script src="scripts/dialog-polyfill.js"></script>
   <script src="scripts/queryProvider.js"></script>
   <script src="scripts/queryGrid.js"></script>

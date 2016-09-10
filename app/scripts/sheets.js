@@ -31,6 +31,8 @@ let latestMoveId = 0;
 let settingsContainer;
 let authorizeButton;
 let signoutButton;
+let fullscreenButton;
+let dialogButton;
 let currentTimerPromiseCancel;
 
 /**
@@ -183,7 +185,43 @@ function displayPromise() {
 }
 
 /**
- * Adds event handlers to handle mouse moves and resizing of the window.
+ * Toggles between fullscreen and not.
+ */
+function toggleFullScreen() {
+  var doc = window.document;
+  var docEl = doc.documentElement;
+
+  var requestFullScreen = docEl.requestFullscreen ||
+      docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen ||
+      docEl.msRequestFullscreen;
+  var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen ||
+      doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+  if (!doc.fullscreenElement && !doc.mozFullScreenElement &&
+      !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+    requestFullScreen.call(docEl);
+  } else {
+    cancelFullScreen.call(doc);
+  }
+}
+
+/**
+ * Resets the fullscreen icon when exiting fullscreen.
+ */
+function fullscreenExitHandler(event) {
+  console.log('handler');
+  var textElement = document.getElementById('fullscreen-button-text-element');
+  var doc = window.document;
+  if (!doc.fullscreenElement && !doc.mozFullScreenElement &&
+      !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+    textElement.innerHTML = 'fullscreen';
+  } else {
+    textElement.innerHTML = 'fullscreen_exit';
+  }
+}
+
+/**
+ * Adds event handler.
  */
 function addWindowEventListeners() {
   window.addEventListener('resize', () => {
@@ -194,6 +232,12 @@ function addWindowEventListeners() {
     showSettings();
     displayPromise().then(hideSettings);
   });
+
+  authorizeButton.addEventListener('click', handleAuthClick);
+  signoutButton.addEventListener('click', handleSignoutClick);
+  fullscreenButton.addEventListener('click', toggleFullScreen);
+  window.addEventListener('webkitfullscreenchange', fullscreenExitHandler,
+    false);
 }
 
 /**
@@ -242,7 +286,6 @@ function addSpreadsheetTextboxEventListener() {
  * Initialises the settings dialog.
  */
 function initDialog() {
-  let dialogButton = document.getElementById('settings-button');
   let dialog = document.querySelector('#dialog');
   if (!dialog.showModal) {
     dialogPolyfill.registerDialog(dialog);
@@ -279,8 +322,6 @@ function initAuth() {
     auth2 = gapi.auth2.getAuthInstance();
     auth2.isSignedIn.listen(updateSigninStatus);
     updateSigninStatus(auth2.isSignedIn.get());
-    authorizeButton.addEventListener('click', handleAuthClick);
-    signoutButton.addEventListener('click', handleSignoutClick);
   });
 }
 
@@ -390,6 +431,10 @@ function initialise() {
   settingsContainer = document.getElementById('settings-container');
   authorizeButton = document.getElementById('authorize-button');
   signoutButton = document.getElementById('signout-button');
+  fullscreenButton = document.getElementById('fullscreen-button');
+  dialogButton = document.getElementById('settings-button');
+
+  console.log(fullscreenButton);
 
   addWindowEventListeners();
   addSliderEventListeners();

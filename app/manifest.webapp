@@ -1,6 +1,7 @@
 {
   "version": "1.0.0",
   "name": "Griddysheets",
+  "display": "fullscreen",
   "launch_path": "/index.html",
   "description": "An example of using the Google Sheets API.",
   "icons": {
