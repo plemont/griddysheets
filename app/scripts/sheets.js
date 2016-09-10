@@ -1,8 +1,7 @@
 
 // OAuth2 settings
-const API_KEY = 'AIzaSyDkRbNLdTbW23iW5CIh02-gl5NZaA1bHqg';
-const CLIENT_ID =
-  '306604176350-edls8ua26cke68kvthocgjaqh9c11vj0.apps.googleusercontent.com';
+const API_KEY = 'ENTER_API_KEY';
+const CLIENT_ID = 'ENTER_CLIENT_ID';
 const SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly';
 
 // Milliseconds between reloading the spreadsheet.
