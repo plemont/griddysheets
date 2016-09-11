@@ -208,7 +208,6 @@ function toggleFullScreen() {
  * Resets the fullscreen icon when exiting fullscreen.
  */
 function fullscreenExitHandler(event) {
-  console.log('handler');
   var textElement = document.getElementById('fullscreen-button-text-element');
   var doc = window.document;
   if (!doc.fullscreenElement && !doc.mozFullScreenElement &&
@@ -432,8 +431,6 @@ function initialise() {
   signoutButton = document.getElementById('signout-button');
   fullscreenButton = document.getElementById('fullscreen-button');
   dialogButton = document.getElementById('settings-button');
-
-  console.log(fullscreenButton);
 
   addWindowEventListeners();
   addSliderEventListeners();
