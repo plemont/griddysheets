@@ -1,7 +1,7 @@
 
 // OAuth2 settings
-const API_KEY = 'ENTER_API_KEY';
-const CLIENT_ID = 'ENTER_CLIENT_ID';
+const API_KEY = 'INSERT_API_KEY';
+const CLIENT_ID = 'INSERT_CLIENT_ID';
 const SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly';
 
 // Milliseconds between reloading the spreadsheet.
@@ -280,6 +280,17 @@ function addSpreadsheetTextboxEventListener() {
   });
 }
 
+function addNetworkChangeListeners() {
+  function updateOnlineStatus(status) {
+    if (queryGrid) {
+      queryGrid.setOnlineStatus(status);
+    }
+  }
+
+  window.addEventListener('online', () => updateOnlineStatus(true));
+  window.addEventListener('offline', () => updateOnlineStatus(false));
+}
+
 /**
  * Initialises the settings dialog.
  */
@@ -433,6 +444,7 @@ function initialise() {
   dialogButton = document.getElementById('settings-button');
 
   addWindowEventListeners();
+  addNetworkChangeListeners();
   addSliderEventListeners();
   addSpreadsheetTextboxEventListener();
 

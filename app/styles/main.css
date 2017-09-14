@@ -34,9 +34,13 @@ html, body {
 .grid-cell {
   width: var(--grid-cell-width);
   height: var(--grid-cell-height);
+    background-size: 200% 100%;
+    background-image: linear-gradient(to left, red 50%, black 50%);
+    -webkit-transition: background-position 1s;
+    -moz-transition: background-position 1s;
+    transition: background-position 1s;
   float: left;
   border: none;
-  transition: all 1s ease-out;
 }
 
 .grid-cell:before {

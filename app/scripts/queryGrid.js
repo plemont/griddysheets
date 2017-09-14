@@ -2,11 +2,11 @@
  * @fileoverview Represents the grid of queries running in the browser.
  */
 const DEFAULT_COLORS = ['#4285F4', '#0F9D58', '#F4B400', '#DB4437'];
+const OFFLINE_COLORS = ['Grey', 'DarkGrey', 'LightGrey', 'WhiteSmoke'];
 
 /**
  * Represents the grid of queries running in the browser.
  */
-/* eslint no-unused-vars: 0 */
 class QueryGrid {
   /**
    * @constructor
@@ -20,8 +20,10 @@ class QueryGrid {
   constructor(numRows, numCols, typingSpeed, opt_queryProvider, opt_colors) {
     this.typingSpeed_ = typingSpeed;
     this.queryProvider_ = opt_queryProvider;
+    this.offlineQueryProvider_ = new OfflineQueryProvider();
     this.colors_ = opt_colors || DEFAULT_COLORS;
     this.running_ = false;
+    this.isOnline_ = navigator.onLine;
     this.setSize(numRows, numCols);
     this.startAll();
   }
@@ -82,6 +84,9 @@ class QueryGrid {
   }
 
   getNextQuery() {
+    if (!this.isOnline_) {
+      return this.offlineQueryProvider_.next();
+    }
     return this.queryProvider_.next();
   }
 
@@ -147,8 +152,12 @@ class QueryGrid {
    */
   createNewCell(rowIndex, colIndex) {
     let oldElement = this.cells_[rowIndex][colIndex].getElement();
+    let lastColor;
+    if (this.cells_[rowIndex][colIndex]) {
+      lastColor = this.cells_[rowIndex][colIndex].getBackgroundColor();
+    }
     this.cells_[rowIndex][colIndex] = new QueryGridCell(rowIndex,
-      colIndex, this, this.queryProvider_);
+      colIndex, this, lastColor);
     let gridDiv = document.getElementById('grid-container');
     let newElement = this.cells_[rowIndex][colIndex].getElement();
     gridDiv.replaceChild(newElement, oldElement);
@@ -156,7 +165,19 @@ class QueryGrid {
   }
 
   getNextColor() {
+    if (!this.isOnline_) {
+      let index = Math.floor(Math.random() * OFFLINE_COLORS.length);
+      return OFFLINE_COLORS[index];
+    }
+
     let index = Math.floor(Math.random() * this.colors_.length);
     return this.colors_[index];
+  }
+
+  setOnlineStatus(status) {
+    if (status !== this.isOnline_) {
+      this.isOnline_ = status;
+      this.resize(this.numRows_, this.numCols_);
+    }
   }
 }

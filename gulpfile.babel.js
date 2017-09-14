@@ -38,7 +38,7 @@ const reload = browserSync.reload;
 
 const lintArgs = {
   globals: ['gapi', 'dialogPolyfill', 'QueryGrid', 'QueryGridCell',
-            'QueryProvider']
+            'QueryProvider','OfflineQueryProvider']
 };
 
 // Lint JavaScript
@@ -115,6 +115,7 @@ gulp.task('scripts', () =>
       //       to be correctly concatenated
       './app/scripts/dialog-polyfill.js',
       './app/scripts/queryProvider.js',
+      './app/scripts/offlineQueryProvider.js',
       './app/scripts/queryGrid.js',
       './app/scripts/queryGridCell.js',
       './app/scripts/sheets.js',
@@ -180,7 +181,7 @@ gulp.task('serve', ['copy-dialog-polyfill', 'scripts', 'styles'], () => {
 
   gulp.watch(['app/**/*.html'], reload);
   gulp.watch(['app/styles/**/*.{scss,css}'], ['styles', reload]);
-  gulp.watch(['app/scripts/**/*.js'], ['lint', 'scripts', reload]);
+  gulp.watch(['app/scripts/**/*.js'], ['scripts', reload]);
   gulp.watch(['app/images/**/*'], reload);
 });
 
@@ -205,21 +206,10 @@ gulp.task('default', ['clean'], cb =>
   runSequence(
     'copy-dialog-polyfill',
     'styles',
-    ['lint', 'html', 'scripts', 'images', 'copy'],
+    [ 'html', 'scripts', 'images', 'copy'],
     'generate-service-worker',
     cb
   )
-);
-
-// Run PageSpeed Insights
-gulp.task('pagespeed', cb =>
-  // Update the below URL to the public URL of your site
-  pagespeed('example.com', {
-    strategy: 'mobile'
-    // By default we use the PageSpeed Insights free (no API key) tier.
-    // Use a Google Developer API key if you have one: http://goo.gl/RkN0vE
-    // key: 'YOUR_API_KEY'
-  }, cb)
 );
 
 // Copy over the scripts that are used in importScripts as part of the generate-service-worker task.

@@ -1,13 +1,15 @@
 /* eslint no-unused-vars: 0 */
 class QueryGridCell {
-  constructor(rowIndex, colIndex, grid) {
+  constructor(rowIndex, colIndex, grid, opt_lastColor) {
     this.rowIndex_ = rowIndex;
     this.colIndex_ = colIndex;
     this.queryCursor_ = 0;
     this.grid_ = grid;
+    this.lastColor_ = opt_lastColor || grid.getNextColor();
     this.backgroundColor_ = grid.getNextColor();
 
     this.running_ = false;
+    this.direction_ = Math.floor(Math.random() * 4);
     this.createElement_();
   }
 
@@ -16,29 +18,22 @@ class QueryGridCell {
       this.running_ = true;
       this.query_ = this.grid_.getNextQuery();
       this.transition().then(() => {
-        this.cellElement_.style.boxShadow = this.createBoxShadowTransition();
+        this.cellElement_.style.backgroundPosition = this.createTransition();
         this.typeCharacter();
       });
     }
   }
 
-  createBoxShadowTransition() {
-    let i = Math.floor(Math.random() * 4);
-    let boxShadow;
-    if (i === 1) {
-      boxShadow = 'inset 0 ' + this.cellElement_.clientHeight + 'px ' +
-        this.grid_.getNextColor();
-    } else if (i === 2) {
-      boxShadow = 'inset 0 -' + this.cellElement_.clientHeight + 'px ' +
-        this.grid_.getNextColor();
-    } else if (i === 3) {
-      boxShadow = 'inset ' + this.cellElement_.clientWidth + 'px 0 0 0 ' +
-        this.grid_.getNextColor();
-    } else {
-      boxShadow = 'inset -' + this.cellElement_.clientWidth + 'px 0 0 0 ' +
-        this.grid_.getNextColor();
+  createTransition() {
+    if (this.direction_ === 0) {
+      return '100% 0%';
+    } else if (this.direction_ === 1) {
+      return '-100% 0%';
+    } else if (this.direction_ === 2) {
+      return '0% -100%';
+    } else if (this.direction_ === 3) {
+      return '0% 100%';
     }
-    return boxShadow;
   }
 
   stop() {
@@ -86,6 +81,23 @@ class QueryGridCell {
     cellElement.style.backgroundColor = this.getBackgroundColor();
     cellElement.id = 'grid-cell-' + this.rowIndex_ + '-' + this.colIndex_;
 
+    if (this.direction_ === 0) {
+      cellElement.style.backgroundSize = '200% 100%';
+      cellElement.style.backgroundImage = 'linear-gradient(to left, ' +
+          this.getBackgroundColor() + ' 50%, ' + this.lastColor_ + ' 50%)';
+    } else if (this.direction_ === 1) {
+      cellElement.style.backgroundSize = '200% 100%';
+      cellElement.style.backgroundImage = 'linear-gradient(to right, ' +
+          this.lastColor_ + ' 50%, ' + this.getBackgroundColor() + ' 50%)';
+    } else if (this.direction_ === 2) {
+      cellElement.style.backgroundSize = '100% 200%';
+      cellElement.style.backgroundImage = 'linear-gradient(to bottom, ' +
+          this.lastColor_ + ' 50%, ' + this.getBackgroundColor() + ' 50%)';
+    } else if (this.direction_ === 3) {
+      cellElement.style.backgroundSize = '100% 200%';
+      cellElement.style.backgroundImage = 'linear-gradient(to top, ' +
+          this.getBackgroundColor() + ' 50%, ' + this.lastColor_ + ' 50%)';
+    }
     let textContainer = document.createElement('div');
     textContainer.classList.add('grid-cell-text');
 
